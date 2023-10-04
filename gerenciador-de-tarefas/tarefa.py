@@ -1,4 +1,5 @@
 import datetime
+import indice_invalido_exception
 
 
 class Tarefa:
@@ -14,9 +15,10 @@ class Tarefa:
 
 
 def criar_tarefa():
-    titulo = input("Digite o título da tarefa: ")
-    descricao = input("Digite a descrição da tarefa: ")
+    titulo = input("Digite o titulo da tarefa: ")
+    descricao = input("Digite a descricao da tarefa: ")
     nova_tarefa = Tarefa(titulo, descricao)
+    print("\nTarefa criada!")
 
     return nova_tarefa
 
@@ -34,36 +36,71 @@ def visualizar_tarefas(lista_de_tarefas):
         print("------------------------------------------")
 
 
-
 def apagar_tarefa(lista_de_tarefas):
     menu = visualizar_tarefas(lista_de_tarefas)
     if menu == 0:
         return 0
     i = int(input("Qual tarefa deseja remover? "))
-    tarefa_remover = lista_de_tarefas[i - 1]
-    lista_de_tarefas.remove(tarefa_remover)
+    try:
+        if i < 1 or i > len(lista_de_tarefas):
+            raise indice_invalido_exception.IndiceInvalidoException(
+                "Digite um indice valido!\nRetornando ao Menu inicial")
+
+        tarefa_remover = lista_de_tarefas[i - 1]  # aponta para o endereço da memória
+        print(f"\nTarefa {tarefa_remover.titulo} removida com sucesso!\n")
+        lista_de_tarefas.remove(tarefa_remover)
+    except indice_invalido_exception.IndiceInvalidoException as e:
+        print(e)
+
 
 def alterar_tarefas(lista_de_tarefas):
     menu = visualizar_tarefas(lista_de_tarefas)
     if menu == 0:
         return 0
+
     i = int(input("Qual tarefa deseja modificar? "))
-    tarefa_alterar = lista_de_tarefas[i - 1]  # aponta para o endereço da memória
-    while (menu := input("1- Alterar titulo"
+
+    try:
+        if i < 1 or i > len(lista_de_tarefas):
+            raise indice_invalido_exception.IndiceInvalidoException(
+                "Digite um indice valido!\nRetornando ao Menu inicial")
+
+        tarefa_alterar = lista_de_tarefas[i - 1]  # aponta para o endereço da memória
+        while (menu := input("1- Alterar titulo"
                              "\n2- Alterar descricao"
                              "\n3- Alterar status"
-                             "\nDigite a opção que deseja realizar: ")):
+                             "\n4- Sair"
+                             "\nDigite a opcao que deseja realizar: ")):
+            match menu:
+                case "1":
+                    alterar_titulo(tarefa_alterar)
+                case "2":
+                    alterar_descricao(tarefa_alterar)
+                case "3":
+                    alterar_status(tarefa_alterar)
+                case "4":
+                    break
+                case _:
+                    print("Entrada inválida")
+                    break
+    except indice_invalido_exception.IndiceInvalidoException as e:
+        print(e)
 
-        match menu:
-            case "1":
-                tarefa_alterar.titulo = input("Digite o novo titulo da tarefa: ")
-            case "2":
-                tarefa_alterar.descricao = input("Digite a nova descricao da tarefa: ")
-            case "3":
-                if tarefa_alterar.status == "Pendente":
-                    tarefa_alterar.status = "Concluida"
-                else:
-                    tarefa_alterar.status = "Pendente"
-            case _:
-                print("Entrada inválida")
-                break
+
+def alterar_titulo(tarefa_alterar):
+    tarefa_alterar.titulo = input("Digite o novo titulo da tarefa: ")
+    print("titulo alterado com sucesso!\n")
+
+
+def alterar_descricao(tarefa_alterar):
+    tarefa_alterar.descricao = input("Digite a nova descricao da tarefa: ")
+    print("Descricao alterada com sucesso!\n")
+
+
+def alterar_status(tarefa_alterar):
+    if tarefa_alterar.status == "Pendente":
+        tarefa_alterar.status = "Concluida"
+        print("Tarefa alterada para Concluida!\n")
+    else:
+        tarefa_alterar.status = "Pendente"
+        print("Tarefa alterada para Pendente!\n")

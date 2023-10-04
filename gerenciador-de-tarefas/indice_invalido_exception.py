@@ -1,0 +1,3 @@
+class IndiceInvalidoException(Exception):
+    pass
+
