@@ -40,8 +40,12 @@ def apagar_tarefa(lista_de_tarefas):
     menu = visualizar_tarefas(lista_de_tarefas)
     if menu == 0:
         return 0
-    i = int(input("Qual tarefa deseja remover? "))
     try:
+        i = input("Qual tarefa deseja remover? ")
+        if not i.isdigit():
+            raise indice_invalido_exception.IndiceInvalidoException(
+                "Digite um indice valido!\nRetornando ao Menu inicial")
+        i = int(i)
         if i < 1 or i > len(lista_de_tarefas):
             raise indice_invalido_exception.IndiceInvalidoException(
                 "Digite um indice valido!\nRetornando ao Menu inicial")
@@ -58,9 +62,12 @@ def alterar_tarefas(lista_de_tarefas):
     if menu == 0:
         return 0
 
-    i = int(input("Qual tarefa deseja modificar? "))
-
     try:
+        i = input("Qual tarefa deseja modificar? ")
+        if not i.isdigit():
+            raise indice_invalido_exception.IndiceInvalidoException(
+                "Digite um indice valido!\nRetornando ao Menu inicial")
+        i = int(i)
         if i < 1 or i > len(lista_de_tarefas):
             raise indice_invalido_exception.IndiceInvalidoException(
                 "Digite um indice valido!\nRetornando ao Menu inicial")
