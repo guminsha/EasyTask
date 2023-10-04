@@ -24,5 +24,5 @@ while (menu := input("1- Criar nova tarefas"
             print("\n------- Programa Finalizado -------\n")
             break
         case _:
-            print("Entrada inválida")
+            print("Entrada invalida")
             break

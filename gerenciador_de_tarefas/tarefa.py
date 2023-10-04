@@ -18,7 +18,7 @@ def criar_tarefa():
     titulo = input("Digite o titulo da tarefa: ")
     descricao = input("Digite a descricao da tarefa: ")
     nova_tarefa = Tarefa(titulo, descricao)
-    print("\nTarefa criada!")
+    print("\nTarefa criada!\n")
 
     return nova_tarefa
 
